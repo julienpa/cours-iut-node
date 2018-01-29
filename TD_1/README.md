@@ -11,7 +11,7 @@ Feature clés en ES6 [Top 10 ES6 Features Every Busy JavaScript Developer Must K
 
 ### Quelques mots sur NodeJS
 Permet d’exécuter du Javascript coté backend.
-Peut s’installer sur Windows, MacOS, Linux, aussi bien sur des Environnements de Développement (vos machine de dev) que sur des serveurs de production.
+Peut s’installer sur Windows, MacOS, Linux, aussi bien sur des Environnements de Développement (vos machines de dev) que sur des serveurs de production.
 
 ### Fonctionnement Client / Serveur
 Nous avons vu: comment fonctionne une requête HTTP
@@ -79,10 +79,10 @@ http.createServer((req, res) => {
 }).listen(3000, "127.0.0.1");
 ```
 
-Pour afficher le "Hello World" dans la navigateur
+Pour afficher le "Hello World" dans le navigateur
 
 * Lancer le serveur NodeJS via la commande `node app.js`
-* Ouvrir l'url `http://localhost:3000` via votre navigateur favoris
+* Ouvrir l'url `http://localhost:3000` via votre navigateur favori
 
 ### Exercice 2: Afficher un fichier HTML depuis un fichier séparé
 
@@ -115,7 +115,7 @@ http.createServer((req, res) => {
 ```
 
 #### Info: Utilisation des stream
-Pour des raisons de performance il est préférable d'utiliser les Stream de NodeJS
+Pour des raisons de performance, il est préférable d'utiliser les Stream de NodeJS
 
 **./app.js**
 ```js
@@ -131,7 +131,7 @@ http.createServer((req, res) => {
 }).listen(3000, "127.0.0.1");
 ```
 
-### Exercice 3: Afficher une liste de fruits dynamiquements
+### Exercice 3: Afficher une liste de fruits dynamiquement
 
 
 **./app.js**
