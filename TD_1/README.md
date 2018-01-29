@@ -26,7 +26,8 @@ Connection: keep alive
 
 Ici, on utilise la version `1.1` du protocol `HTTP` afin d’accéder à la ressource (= ici c’est une pages HTML) disponible à l’url `www.google.com` via le port `443` (= HTTPS). En plus de ces informations, la requête HTTP contient aussi une série de “Header HTTP” permettant au client de donner des informations au serveur le concernant.
 
-INSERT_IMG
+Ci-dessous un screenshot obtenu via l'onglet "Network" dans le [Chrome DevTools](https://developer.chrome.com/devtools)
+![Network screenshot in Google Chrome Developer Tool](network_screenshot.png)
 
 En réponse le serveur nous à retourné un document de type `MIME = text/html`
 
@@ -57,4 +58,178 @@ Résolution d’une nom-de-domain.com en adresse IP grasse aux serveurs DNS.
 
 ## Mise en pratique
 
-TODO
+### Exercice 1: Serveur basic sur le port 3000
+
+**./app.js**
+```js
+"use strict";
+
+const http = require('http');
+
+// in ES5
+// http.createServer(function(req, res) {
+//     res.writeHead(200, { "Content-Type": "text/html"});
+//     res.end("<b>Hello world</b>");
+// }).listen(3000, "127.0.0.1");
+
+// in ES6
+http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/html"});
+    res.end("<b>Hello world</b>");
+}).listen(3000, "127.0.0.1");
+```
+
+Pour afficher le "Hello World" dans la navigateur
+
+* Lancer le serveur NodeJS via la commande `node app.js`
+* Ouvrir l'url `http://localhost:3000` via votre navigateur favoris
+
+### Exercice 2: Afficher un fichier HTML depuis un fichier séparé
+
+**./app.js**
+```js
+"use strict";
+
+const http = require('http');
+const fs = require('fs');
+
+http.createServer((req, res) => {
+    let html = fs.readFileSync(__dirname + '/index.html', 'utf8');
+    html = html.replace('#firstname#', "Alexandre");
+    res.writeHead(200, { "Content-Type": "text/html"});
+    res.end(html);
+
+}).listen(3000, "127.0.0.1");
+```
+
+**./index.html**
+```html
+<html>
+    <head>
+        <title>Hello</title>
+    </head>
+    <body>
+        <b>Hello #firstname#</b>
+    </body>
+</html>
+```
+
+#### Info: Utilisation des stream
+Pour des raisons de performance il est préférable d'utiliser les Stream de NodeJS
+
+**./app.js**
+```js
+"use strict";
+
+const http = require('http');
+const fs = require('fs');
+
+http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/html"});
+    fs.createReadStream(__dirname + '/index.html', 'utf8').pipe(res);
+
+}).listen(3000, "127.0.0.1");
+```
+
+### Exercice 3: Afficher une liste de fruits dynamiquements
+
+
+**./app.js**
+```js
+"use strict";
+
+const http = require('http');
+const fs = require('fs');
+const fruits = ['Fraise', 'Orange', 'Melon'];
+
+http.createServer((req, res) => {
+    let html = fs.readFileSync(__dirname + '/fruits.html', 'utf8');
+    let listHtml = '';
+
+    // Create the HTML with the fruit list
+    for (let i=0; i < fruits.length; ++i) {
+        listHtml += '<li>' + fruits[i] + '</li>';
+    }
+
+    // Inject the fruitlist into the HTML file loaded
+    html = html.replace('#fruit_list#', listHtml);
+
+    res.writeHead(200, { "Content-Type": "text/html"});
+    res.end(html);
+}).listen(3000, "127.0.0.1");
+```
+
+**./index.html**
+
+```html
+<html>
+    <head>
+        <title>Liste de fruits</title>
+    </head>
+    <body>
+        <b>Ma liste</b>
+        <ul>
+            #fruit_list#
+        </ul>
+    </body>
+</html>
+```
+
+### Exercice 4: Retourner une réponse JSON
+
+```js
+"use strict";
+
+const http = require('http');
+const fs = require('fs');
+const person = {
+    firstname: "Mark",
+    lastname: "Zukenberg"
+};
+
+http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "application/json"});
+    res.end(JSON.stringify(person));
+
+}).listen(3000, "127.0.0.1");
+```
+
+### Exercice 5: Routage des urls
+
+```js
+"use strict";
+
+const http = require('http');
+const fs = require('fs');
+const fruits = ['Fraise', 'Orange', 'Melon'];
+const person = {
+    firstname: "Mark",
+    lastname: "Zukenberg"
+};
+
+http.createServer((req, res) => {
+    if (req.url === '/fruits') {
+        let html = fs.readFileSync(__dirname + '/fruits.html', 'utf8');
+        html = html.replace('#fruit_list#', getItemList(fruits));
+        res.writeHead(200, { "Content-Type": "text/html"});
+        res.end(html);
+    }
+    else if (req.url === '/json') {
+        res.writeHead(200, { "Content-Type": "application/json"});
+        res.end(JSON.stringify(person));
+    }
+    else {
+        res.writeHead(404);
+        res.end();
+    }
+
+}).listen(3000, "127.0.0.1");
+
+function getItemList(list) {
+    let listHtml = '';
+    for (let i=0; i < fruits.length; ++i) {
+        listHtml += '<li>' + fruits[i] + '</li>';
+    }
+    return listHtml;
+}
+```
