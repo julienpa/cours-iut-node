@@ -1,0 +1,27 @@
+html
+  head
+    title=myTitle
+    link(rel="stylesheet" href="/style.css")
+  body
+    .container
+      header
+        h1 Mon site - #{myTitle}
+        if username
+          span Connecté en tant que #{username}
+        else
+          span Pas connecté
+      nav
+        ul
+          li
+            a(href="/") Accueil
+          li
+            a(href="/projects") Projets
+          li
+            a(href="/contact") Contact
+          li
+            a(href="/login") Login
+
+      .content
+        block dynamicContent
+
+      footer IUT Paris Descartes - Cours programmation back-end avec Julien P. et Alexandre C.
