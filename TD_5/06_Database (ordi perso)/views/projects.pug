@@ -1,0 +1,8 @@
+extends layout
+
+block dynamicContent
+    ul
+        for elt in projects_list
+            li 
+                a(href="/projects/" + elt.id) #{elt.id} - #{elt.name}
+
