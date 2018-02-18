@@ -1,0 +1,28 @@
+html
+  head
+    title=myTitle
+    link(rel="stylesheet" href="/style.css")
+  body
+    .container
+      header
+        h1 Mon site - #{myTitle}
+        if username
+          span Connecté en tant que #{username}
+            a(href="/login/logout") (Déconnexion)
+        else
+          span Pas connecté
+      nav
+        ul
+          li
+            a(href="/") Accueil
+          li
+            a(href="/projects") Projets
+          li
+            a(href="/contact") Contact
+          li
+            a(href="/login") Login
+
+      .content
+        block dynamicContent
+
+      footer Julien Paroche – 06 Février 2018
