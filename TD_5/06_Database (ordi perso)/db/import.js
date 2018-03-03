@@ -8,9 +8,9 @@ const sql = fs.readFileSync(dbFilePath).toString()
 
 // Inialisation de la connexion
 const client = new Client({
-	user: 'waktnwfi',
+	user: 'dqwaktnwfi',
 	host: 'horton.elephantsql.com',
-	database: 'waktnwfi',
+	database: 'dqwaktnwfi',
 	password: 'ceIrQsu630rgaKfLZYLX1iEUJG-W43-b',
 	port: 5432,
 })
